@@ -1,6 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const multer = require("multer");
+const path = require('path');
+const fs = require("fs");
+
+
+const handleError = (err, res) => {
+  res
+    .status(500)
+    .contentType("text/plain")
+    .end("Oops! Something went wrong!");
+};
+
+const upload = multer({
+  dest: "./upload"
+  // you might also want to set some limits: https://github.com/expressjs/multer#limits
+});
+
+
 
 router.get('/', (req, res, next) => {
 	return res.render('index.ejs');
@@ -69,7 +87,7 @@ router.post('/login', (req, res, next) => {
 				res.send({ "Success": "Wrong password!" });
 			}
 		} else {
-			res.send({ "Success": "This Email Is not regestered!" });
+			res.send({ "Success": "This Email Is not registered!" });
 		}
 	});
 });
@@ -128,5 +146,38 @@ router.post('/forgetpass', (req, res, next) => {
 	});
 
 });
+
+router.post(
+	"/upload",
+	upload.single("file" /* name attribute of <file> element in your form */),
+	(req, res) => {
+	  const tempPath = req.file.path;
+	  const targetPath = path.join(__dirname, "./uploads/image.png");
+  
+	  if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+		fs.rename(tempPath, targetPath, err => {
+		  if (err) return handleError(err, res);
+  
+		  res
+			.status(200)
+			.contentType("text/plain")
+			.end("File uploaded!");
+		});
+	  } else {
+		fs.unlink(tempPath, err => {
+		  if (err) return handleError(err, res);
+  
+		  res
+			.status(403)
+			.contentType("text/plain")
+			.end("Only .png files are allowed!");
+		});
+	  }
+	}
+  );
+
+  router.get("/image.png", (req, res) => {
+	res.sendFile(path.join(__dirname, "./uploads/image.png"));
+  });
 
 module.exports = router;
