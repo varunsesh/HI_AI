@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const fileUpload = require('express-fileupload');
 
 const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/ManualAuth';
 
@@ -28,8 +29,12 @@ app.use(session({
   })
 }));
 
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// app.use(express.static(__dirname + '/public'));
+// app.use('/upload', express.static('uploads'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

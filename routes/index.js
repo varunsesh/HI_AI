@@ -60,7 +60,7 @@ router.post('/', (req, res, next) => {
 						});
 
 					}).sort({ _id: -1 }).limit(1);
-					res.send({ "Success": "You are regestered,You can login now." });
+					res.send({ "Success": "You are registered,You can login now." });
 				} else {
 					res.send({ "Success": "Email is already used." });
 				}
@@ -126,7 +126,7 @@ router.get('/forgetpass', (req, res, next) => {
 router.post('/forgetpass', (req, res, next) => {
 	User.findOne({ email: req.body.email }, (err, data) => {
 		if (!data) {
-			res.send({ "Success": "This Email Is not regestered!" });
+			res.send({ "Success": "This Email Is not registered!" });
 		} else {
 			if (req.body.password == req.body.passwordConf) {
 				data.password = req.body.password;
@@ -140,7 +140,7 @@ router.post('/forgetpass', (req, res, next) => {
 					res.send({ "Success": "Password changed!" });
 				});
 			} else {
-				res.send({ "Success": "Password does not matched! Both Password should be same." });
+				res.send({ "Success": "Password do not match! Both Password should be same." });
 			}
 		}
 	});
@@ -148,31 +148,36 @@ router.post('/forgetpass', (req, res, next) => {
 });
 
 router.post(
-	"/upload",
+	"/predict",
 	upload.single("file" /* name attribute of <file> element in your form */),
 	(req, res) => {
 	  const tempPath = req.file.path;
 	  const targetPath = path.join(__dirname, "./uploads/image.png");
   
-	  if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-		fs.rename(tempPath, targetPath, err => {
-		  if (err) return handleError(err, res);
+	//   if (path.extname(req.file.originalname).toLowerCase() === ".png") {
+	// 	fs.rename(tempPath, targetPath, err => {
+	// 	  if (err) return handleError(err, res);
+		  
+		// })
+	// 	  res
+	// 		.status(200)
+	// 		.contentType("text/plain")
+	// 		.end("File uploaded!");
+	// 		res.render("data.ejs")
+	// 	});
+	//   } else {
+	// 	fs.unlink(tempPath, err => {
+	// 	  if (err) return handleError(err, res);
   
-		  res
-			.status(200)
-			.contentType("text/plain")
-			.end("File uploaded!");
-		});
-	  } else {
-		fs.unlink(tempPath, err => {
-		  if (err) return handleError(err, res);
-  
-		  res
-			.status(403)
-			.contentType("text/plain")
-			.end("Only .png files are allowed!");
-		});
-	  }
+	// 	  res
+	// 		.status(403)
+	// 		.contentType("text/plain")
+	// 		.end("Only .png files are allowed!");
+	// 	});
+		
+	 //  }
+	
+	   res.render("upload.ejs");
 	}
   );
 
