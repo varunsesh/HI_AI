@@ -23,7 +23,7 @@
 
 				$.ajax({
 					type: 'POST',
-					url: '/upload',
+					url: '/data',
 					data: $('#form').serialize(),
 					dataType: "json",
 					success: (response) => {
@@ -35,7 +35,7 @@
 							document.getElementById("check").innerHTML = "";
 						}, 3000);
 						if (response.Success == "Success!") {
-							document.getElementById("aa").click();
+							document.getElementById("predict").click();
 						};
 					},
 					error: () => {
@@ -83,7 +83,7 @@
 	<div class="row">
 		<div class="col-sm-3"></div>
 	<div class="col-sm-6">
-	<form id="form" method="post" enctype="multipart/form-data">
+	<form id="form" enctype="multipart/form-data">
 		
 		<div class="row py-4">
 			<div class="col-lg-20 mx-auto">
@@ -105,7 +105,7 @@
 		  <!--<p class="font-italic text-white text-center">The image uploaded will be rendered inside the box below.</p>-->
 		  <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block"></div>
 		  <br>
-		  <input type="submit" value="Predict">	
+		  <input type="submit" onclick="testVariable" id="predict" value="Predict">	
 	</div>
 	<div class="col-sm-3"></div>
 	</div>
