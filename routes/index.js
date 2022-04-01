@@ -19,6 +19,9 @@ const storage = multer.diskStorage({
 
 const tf = require('@tensorflow/tfjs');
 
+const sendgrid = require('@sendgrid/mail');
+const SENDGRID_API_KEY = "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"
+sendgrid.setApiKey(SENDGRID_API_KEY)
 
 router.get('/', (req, res, next) => {
 	return res.render('index.ejs');
@@ -155,6 +158,32 @@ router.post('/forgetpass', (req, res, next) => {
 		if (!data) {
 			res.send({ "Success": "This Email Is not regestered!" });
 		} else {
+		    const msg = {
+                from: 'health.informatics.team@gmail.com',
+                to: req.body.email,
+                subject: 'HI App: Password Reset Link',
+                text: 'Please find password reset link:http://localhost:3000/V4e74Oc9Aj',
+                html: '<p>Please find password reset link:</p><a>http://localhost:3000/V4e74Oc9Aj</a>',
+            }
+            sendgrid.send(msg).then((resp) => {
+                res.send({ "Success": "E-mail Sent!" });
+            })
+            .catch((error) => {
+                res.send({ "Success": "Error, please try again later" });
+            })
+		}
+	});
+});
+
+router.get('/V4e74Oc9Aj', (req, res, next) => {
+	res.render("resetpass.ejs");
+});
+
+router.post('/V4e74Oc9Aj', (req, res, next) => {
+	User.findOne({ email: req.body.email }, (err, data) => {
+		if (!data) {
+			res.send({ "Success": "This Email Is not registered!" });
+		} else {
 			if (req.body.password == req.body.passwordConf) {
 				data.password = req.body.password;
 				data.passwordConf = req.body.passwordConf;
@@ -163,11 +192,10 @@ router.post('/forgetpass', (req, res, next) => {
 					if (err)
 						console.log(err);
 					else
-						console.log('Success');
-					res.send({ "Success": "Password changed!" });
+					    res.send({ "Success": "Password changed!" });
 				});
 			} else {
-				res.send({ "Success": "Password does not matched! Both Password should be same." });
+				res.send({ "Success": "Password do not match! Both Password should be same." });
 			}
 		}
 	});
