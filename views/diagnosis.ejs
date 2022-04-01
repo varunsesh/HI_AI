@@ -1,0 +1,25 @@
+<%- include('./partial/_profileheader') %>
+
+<body>
+	<div class="xray-card">
+		<div>
+			<p>Xray Uploaded</p>
+			<h4>Click predict to get the diagnosis</h4>
+
+			<img id="xray-file" src="/uploads/xray.jpg" width="500" height="500">
+        </div>
+        <br>
+        <br>
+        <input type="button" value="Predict" class="btn btn-success" onclick="predict();">
+        <br>
+        <br>
+        <h4 id="result"></h4>
+        <br>
+        <a href="/profile">Another Diagnosis?</a>
+	</div>
+</body>
+<footer>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script type="text/javascript" src="predict.js"></script>
+</footer>
+</html>
