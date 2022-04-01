@@ -9,9 +9,19 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 
 
-const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/ManualAuth';
+const { MongoClient, ServerApiVersion } = require('mongodb');
+//const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/ManualAuth';
+const uri = "mongodb+srv://varun:varun123@cluster0.peze9.mongodb.net/usersDB";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
 
-mongoose.connect(MongoDBURI, {
+const MongoDBURI = uri;
+
+mongoose.connect(uri, {
   useUnifiedTopology: true,
   useNewUrlParser: true
 });
