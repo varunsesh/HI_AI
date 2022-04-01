@@ -13,6 +13,7 @@
         <br>
         <br>
         <input type="button" value="Predict" class="btn btn-success" onclick="predict();">
+        <input type="button" value="Explain" class="btn btn-success" onclick="explain();">
         <br>
         <br>
         <h4 id="result"></h4>
@@ -23,7 +24,15 @@
     </div>
 </body>
 <footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" 
+        crossorigin="anonymous">
+    </script>
+    <script src="./css/jquery.toast.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     <script type="text/javascript" src="predict.js"></script>
+
+
+    
 </footer>
 </html>
