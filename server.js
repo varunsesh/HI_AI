@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo')(session);
 
 const MongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/ManualAuth';
 
+
 mongoose.connect(MongoDBURI, {
   useUnifiedTopology: true,
   useNewUrlParser: true

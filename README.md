@@ -1,6 +1,6 @@
-# Node.js-Register-Login-App
+# AI Radiology Assistant Prediction App
 
-This is a user login and registration app using Node.js, Express, Mongoose, EJS and express-sessions.
+This is a AI based radiology assistant app. The main objective is to run an AI prediction algorithm to try and catch early onset of pneumonia in covid patients.
 
 ## Getting Started
 

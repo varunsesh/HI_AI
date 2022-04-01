@@ -4,10 +4,8 @@
 
 	<script type="text/javascript">
 		$(document).ready(() => {
-
 			$("#form").submit((event) => {
 				event.preventDefault();
-
 				$.ajax({
 					type: 'POST',
 					url: '/login',
@@ -15,7 +13,6 @@
 					dataType: "json",
 					success: (response) => {
 						$('#form')[0].reset();
-
 						document.getElementById("check").innerHTML = response.Success;
 						//ADD THIS CODE
 						setTimeout(() => {
@@ -29,13 +26,12 @@
 					}
 				})
 			});
-
 		});
 	</script>
 </head>
 
 <body>
-	<div class="col-md-4 col-md-offset-4 form-card">
+	<div class="col-md-4 col-md-offset-4">
 		<div>
 			<p>Login</p>
 		</div>
