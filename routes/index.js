@@ -1,6 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
+const multer = require('multer');
+const path = require('path');
+
+const helpers = require('./helpers');
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'views/uploads/');
+    },
+
+    // By default, multer removes file extensions so let's add them back
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + path.extname(file.originalname));
+    }
+});
+
+const tf = require('@tensorflow/tfjs');
+
 
 router.get('/', (req, res, next) => {
 	return res.render('index.ejs');
@@ -44,12 +62,12 @@ router.post('/', (req, res, next) => {
 					}).sort({ _id: -1 }).limit(1);
 					res.send({ "Success": "You are regestered,You can login now." });
 				} else {
-					res.send({ "Success": "Email is already used." });
+					res.send({ "Error": "Email is already used." });
 				}
 
 			});
 		} else {
-			res.send({ "Success": "password is not matched" });
+			res.send({ "Error": "password is not matched" });
 		}
 	}
 });
@@ -84,6 +102,33 @@ router.get('/profile', (req, res, next) => {
 	});
 });
 
+router.post('/profile', (req, res) => {
+    // 'xray' is the name of our file input field in the HTML form
+    let upload = multer({ storage: storage, fileFilter: helpers.imageFilter }).single('xray');
+
+    upload(req, res, function(err) {
+
+        if (req.fileValidationError) {
+            return res.send(req.fileValidationError);
+        }
+        else if (!req.file) {
+            return res.send('Please select an image to upload');
+        }
+        else if (err instanceof multer.MulterError) {
+            return res.send(err);
+        }
+        else if (err) {
+            return res.send(err);
+        }
+        res.redirect('/diagnosis');
+    });
+});
+
+router.get("/diagnosis", (req, res) => {
+  res.render("diagnosis.ejs")
+});
+
+
 router.get('/logout', (req, res, next) => {
 	if (req.session) {
 		// delete session object
@@ -99,7 +144,7 @@ router.get('/logout', (req, res, next) => {
 
 router.get('/about', (req, res, next)=>{
 	res.render("about.ejs")
-})
+});
 
 router.get('/forgetpass', (req, res, next) => {
 	res.render("forget.ejs");

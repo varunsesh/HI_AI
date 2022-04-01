@@ -21,3 +21,11 @@ input{
 	margin-bottom: 5px;
 	border-radius: 5px;
 }
+
+.xray-card{
+    background-color: #fff8eb;
+}
+
+.hidden{
+    display: none;
+}
