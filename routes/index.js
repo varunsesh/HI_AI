@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const tf = require('@tensorflow/tfjs');
 
 const sendgrid = require('@sendgrid/mail');
-const SENDGRID_API_KEY = "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"
+const SENDGRID_API_KEY = "api_key_here"
 sendgrid.setApiKey(SENDGRID_API_KEY)
 
 router.get('/', (req, res, next) => {
