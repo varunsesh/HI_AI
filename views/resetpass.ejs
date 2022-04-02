@@ -15,7 +15,7 @@
 				event.preventDefault();
 				$.ajax({
 					type: 'POST',
-					url: '/V4e74Oc9Aj',
+					url: '/Gpfx9W0sBD',
 					data: $('#form3').serialize(),
 					dataType: "json",
 					success: (response) => {
@@ -26,7 +26,7 @@
 						document.getElementById("check1").innerHTML = response.Success;
 						setTimeout(() => {
 							document.getElementById("check1").innerHTML = "";
-						}, 10000);
+						}, 8000);
 						if (response.Success == "Password changed!") {
 							document.getElementById("ll").click();
 						};

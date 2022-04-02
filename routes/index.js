@@ -5,6 +5,8 @@ const multer = require('multer');
 const path = require('path');
 
 const helpers = require('./helpers');
+var otp_sent;
+
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -20,7 +22,7 @@ const storage = multer.diskStorage({
 const tf = require('@tensorflow/tfjs');
 
 const sendgrid = require('@sendgrid/mail');
-const SENDGRID_API_KEY = "apikey"
+const SENDGRID_API_KEY = "your api key here"
 sendgrid.setApiKey(SENDGRID_API_KEY)
 
 router.get('/', (req, res, next) => {
@@ -154,32 +156,46 @@ router.get('/forgetpass', (req, res, next) => {
 });
 
 router.post('/forgetpass', (req, res, next) => {
-	User.findOne({ email: req.body.email }, (err, data) => {
-		if (!data) {
-			res.send({ "Success": "This Email Is not regestered!" });
+    User.findOne({ email: req.body.email }, (err, data) => {
+        if (!data) {
+		    res.send({ "Success": "This Email Is not registered!" });
 		} else {
+            let otp = (Math.random() + 1).toString(10).substring(2,8); //generate a random otp
+            otp_sent = otp
 		    const msg = {
                 from: 'health.informatics.team@gmail.com',
                 to: req.body.email,
-                subject: 'HI App: Password Reset Link',
-                text: 'Please find password reset link:http://localhost:3000/V4e74Oc9Aj',
-                html: '<p>Please find password reset link:</p><a>http://localhost:3000/V4e74Oc9Aj</a>',
-            }
-            sendgrid.send(msg).then((resp) => {
-                res.send({ "Success": "E-mail Sent!" });
-            })
-            .catch((error) => {
-                res.send({ "Success": "Error, please try again later" });
-            })
-		}
-	});
+                subject: 'HI App: Password Reset OTP',
+                text: 'Please find otp: '+otp,
+                }
+                sendgrid.send(msg).then((resp) => {
+                    res.send({ "Success": "E-mail Sent! Enter OTP!" });
+                })
+                .catch((error) => {
+                    res.send({ "Success": "Error, please try again later" });
+                })
+		    }
+	    });
 });
 
-router.get('/V4e74Oc9Aj', (req, res, next) => {
+router.get('/NTNdy9wdYE', (req, res, next) => {
+	res.render("otpform.ejs");
+});
+
+router.post('/NTNdy9wdYE', (req, res, next) => {
+    let otpInfo = req.body;
+    if (otpInfo.otp == otp_sent) {
+        res.send({ "Success": "OTP Correct!" });
+    } else {
+        res.send({ "Success": "OTP InCorrect!" });
+    }
+});
+
+router.get('/Gpfx9W0sBD', (req, res, next) => {
 	res.render("resetpass.ejs");
 });
 
-router.post('/V4e74Oc9Aj', (req, res, next) => {
+router.post('/Gpfx9W0sBD', (req, res, next) => {
 	User.findOne({ email: req.body.email }, (err, data) => {
 		if (!data) {
 			res.send({ "Success": "This Email Is not registered!" });
@@ -193,6 +209,18 @@ router.post('/V4e74Oc9Aj', (req, res, next) => {
 						console.log(err);
 					else
 					    res.send({ "Success": "Password changed!" });
+					    const msg = {
+                            from: 'health.informatics.team@gmail.com',
+                            to: req.body.email,
+                            subject: 'HI App: Password Successfully Changed',
+                            text: 'This mail is to inform you that your password has been successfully changed.',
+                        }
+                        sendgrid.send(msg).then((resp) => {
+                        })
+                        .catch((error) => {
+
+                        })
+
 				});
 			} else {
 				res.send({ "Success": "Password do not match! Both Password should be same." });

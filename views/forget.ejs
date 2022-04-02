@@ -1,13 +1,5 @@
 <%- include ('./partial/_header.ejs') %>
 
-<head>
-	<title>Login Register App</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-	</script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="./css/main.css">
-
 	<script type="text/javascript">
 		$(document).ready(() => {
 			$("#form2").submit((event) => {
@@ -18,14 +10,14 @@
 					data: $('#form2').serialize(),
 					dataType: "json",
 					success: (response) => {
-						//alert("a");
-						//console.log(response.Success);
 						$('#form2')[0].reset();
-						//alert("abc");
 						document.getElementById("check").innerHTML = response.Success;
 						setTimeout(() => {
 							document.getElementById("check").innerHTML = "";
-						}, 8000);
+						}, 4000);
+						if (response.Success == "E-mail Sent! Enter OTP!") {
+                            document.getElementById("oo").click();
+						};
 					},
 					error: () => {
 					}
@@ -52,7 +44,7 @@
 		<div class="mssg bg-danger">
 			<span id="check"></span>
 		</div>
-		<div id="LangTable"><a href="/" id="aa"></a>
+		<div id="LangTable"><a href="/NTNdy9wdYE" id="oo"></a>
 		</div>
 		<div id="LangTable"><span>Go back to </span><a href="/">Register</a> or <a href="/login">Login</a>
 		</div>
