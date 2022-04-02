@@ -17,6 +17,8 @@ const storage = multer.diskStorage({
     }
 });
 
+let r = (Math.random() + 1).toString(36).substring(7); //generate a random string for passwd reset
+
 const tf = require('@tensorflow/tfjs');
 
 const sendgrid = require('@sendgrid/mail');
@@ -156,14 +158,14 @@ router.get('/forgetpass', (req, res, next) => {
 router.post('/forgetpass', (req, res, next) => {
 	User.findOne({ email: req.body.email }, (err, data) => {
 		if (!data) {
-			res.send({ "Success": "This Email Is not regestered!" });
+			res.send({ "Success": "This Email Is not registered!" });
 		} else {
 		    const msg = {
                 from: 'health.informatics.team@gmail.com',
                 to: req.body.email,
                 subject: 'HI App: Password Reset Link',
-                text: 'Please find password reset link:http://localhost:3000/V4e74Oc9Aj',
-                html: '<p>Please find password reset link:</p><a>http://localhost:3000/V4e74Oc9Aj</a>',
+                text: 'Please find password reset link:http://localhost:3000/'+r,
+                html: '<p>Please find password reset link:</p><a>http://localhost:3000/'+r+'</a>',
             }
             sendgrid.send(msg).then((resp) => {
                 res.send({ "Success": "E-mail Sent!" });
@@ -175,11 +177,11 @@ router.post('/forgetpass', (req, res, next) => {
 	});
 });
 
-router.get('/V4e74Oc9Aj', (req, res, next) => {
+router.get('/'+r, (req, res, next) => {
 	res.render("resetpass.ejs");
 });
 
-router.post('/V4e74Oc9Aj', (req, res, next) => {
+router.post('/'+r, (req, res, next) => {
 	User.findOne({ email: req.body.email }, (err, data) => {
 		if (!data) {
 			res.send({ "Success": "This Email Is not registered!" });
