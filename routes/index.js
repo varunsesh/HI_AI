@@ -3,6 +3,8 @@ const router = express.Router();
 const User = require('../models/user');
 const multer = require('multer');
 const path = require('path');
+const spawn = require('child_process').spawn;
+
 
 const helpers = require('./helpers');
 var otp_sent;
@@ -228,6 +230,10 @@ router.post('/Gpfx9W0sBD', (req, res, next) => {
 		}
 	});
 
+});
+router.get('/explain', (req, res, next) => {
+	helpers.explained();
+	res.render("explain.ejs");
 });
 
 module.exports = router;

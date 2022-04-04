@@ -1,6 +1,8 @@
 //classifier.js
+
 var model;
 var predResult = document.getElementById("result");
+
 
 async function predict() {
   $.Toast.showToast({
@@ -33,11 +35,5 @@ async function predict() {
 //});
 }
 
-async function explain() {
-  // action for the submit button
-  model = await tf.loadLayersModel('/model/model.json');
-  const tensorImg =   tf.browser.fromPixels(image).resizeNearestNeighbor([224, 224]).toFloat().expandDims();
-  prediction = await model.predict(tensorImg).data();
-  
-}
+
 
