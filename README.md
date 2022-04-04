@@ -50,6 +50,7 @@ The explainable AI module takes some time to run. Therefore once you click expla
 ## NOTE
 Everytime the /explain route page is refreshed, the explainable ai module runs and saves the image again. Ideally it should send a base64 encoded image that is then decoded on the UI side. At the moment it does send the base64 encoding but it also saves the raw image in a location known to the nodejs service. The send - request between the two services needs cleaning up. 
 
+The model vgg16_model.h5 must be downloaded before using explainable AI service.
 
 
 Thanks to https://github.com/FSojitra/Node.js-Register-Login-App for the base code.
